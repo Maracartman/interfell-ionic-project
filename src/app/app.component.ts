@@ -8,6 +8,8 @@ import {ListPage} from '../pages/list/list';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {LoginPage} from "../pages/login/login";
+import {LoginProvider} from "../providers/login/login";
+import {WelcomePage} from "../pages/welcome/welcome";
 
 
 @Component({
@@ -16,41 +18,53 @@ import {LoginPage} from "../pages/login/login";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-
   rootPage = this.getPageBasedOnLogStatus();
   pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform,
               public menu: MenuController,
               public statusBar: StatusBar,
-              public splashScreen: SplashScreen) {
+              public splashScreen: SplashScreen, loginProvider: LoginProvider) {
     this.initializeApp();
     // set our app's pages
     this.pages = [
-      {title: 'Main', component: HelloIonicPage},
-      {title: 'List', component: ListPage},
-      {title: 'Login', component: LoginPage}
+      {title: 'Main', component: WelcomePage}
     ];
+    if(localStorage.getItem('token') === null){
+      this.pages.push({title: 'Log In', component: LoginPage})
+    }else{
+      this.pages.push({title: 'Log Out', component: null })
+    }
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
   getPageBasedOnLogStatus() {
-    return localStorage.getItem('token') != null ? HelloIonicPage : LoginPage;
+    return localStorage.getItem('token') != null ? WelcomePage : LoginPage;
   }
 
 
   openPage(page) {
-    // close the menu when clicking a link from the menu
     this.menu.close();
-    // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
+    if(page.component) {
+      this.nav.setRoot(page.component);
+    }else{
+      localStorage.clear();
+      this.nav.setRoot(LoginPage);
+      window.location.reload();
+    }
+  }
+
+  isNotLogged(){
+    return localStorage.getItem('token') === null;
+  }
+
+  getUserData(){
+    return localStorage.getItem('firstName')+' '+localStorage.getItem('lastName');
   }
 }

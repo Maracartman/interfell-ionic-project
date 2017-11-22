@@ -1,16 +1,24 @@
-export class AppSettings{
+import {Injectable} from "@angular/core";
+
+@Injectable()
+export class AppSettings {
   /**
    * General app configuration
    * */
+  APP;
+  REST_CONFIG;
+  END_POINTS;
 
-  public static APP = 'APP_WEB';
+  constructor() {
+    this.APP = 'APP_WEB';
 
-  public static REST_CONFIG={
-    ENDPOINT: 'https://dev.tuten.cl:443',
-    REST_RESOURCE: '/TutenREST/rest'
-  }
+    this.REST_CONFIG = {
+      ENDPOINT: 'https://dev.tuten.cl:443',
+      REST_RESOURCE: '/TutenREST/rest'
+    }
 
-  public static END_POINTS = {
-    USER: '/user/'
+    this.END_POINTS = {
+      USER: '/user/'
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {LoginProvider} from "../../providers/login/login";
 import {Login} from "../../models/login";
 
@@ -22,19 +22,40 @@ export class LoginPage {
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private _loginProvider: LoginProvider) {
+              private _loginProvider: LoginProvider,public alerCtrl: AlertController) {
   }
 
-  /*logMe(): void {
+  logMe(): void {
     this._loginProvider.logMe(this.login).subscribe(
       result => {
-        console.log(result);
-        // this.router.navigate(['dashboard']);
+        let alert = this.alerCtrl.create({
+          title: 'Bienvenido! ' ,
+          message: result.firstName+' '+result.lastName,
+          buttons: [{
+            text: 'Ok',
+            handler: func =>{
+              window.location.reload();
+            }
+          }]
+        });
+        alert.present();
       },
       error => {
+        let alert = this.alerCtrl.create({
+          title: 'Error!' ,
+          message: error,
+          buttons: [{
+            text: 'Ok',
+            handler: func =>{
+              this.login.password = '';
+              this.login.email = '';
+            }
+          }]
+        });
+        alert.present();
       }
     );
-  }*/
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
