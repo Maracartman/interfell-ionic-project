@@ -1,12 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ListPage } from '../pages/list/list';
+import {HelloIonicPage} from '../pages/hello-ionic/hello-ionic';
+import {ListPage} from '../pages/list/list';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {LoginPage} from "../pages/login/login";
 
 
@@ -16,21 +16,20 @@ import {LoginPage} from "../pages/login/login";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
-  rootPage = HelloIonicPage;
-  pages: Array<{title: string, component: any}>;
 
-  constructor(
-    public platform: Platform,
-    public menu: MenuController,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen
-  ) {
+  rootPage = this.getPageBasedOnLogStatus();
+  pages: Array<{ title: string, component: any }>;
+
+  constructor(public platform: Platform,
+              public menu: MenuController,
+              public statusBar: StatusBar,
+              public splashScreen: SplashScreen) {
     this.initializeApp();
-
     // set our app's pages
     this.pages = [
-      { title: 'Login', component: LoginPage }
+      {title: 'Main', component: HelloIonicPage},
+      {title: 'List', component: ListPage},
+      {title: 'Login', component: LoginPage}
     ];
   }
 
@@ -42,6 +41,11 @@ export class MyApp {
       this.splashScreen.hide();
     });
   }
+
+  getPageBasedOnLogStatus() {
+    return localStorage.getItem('token') != null ? HelloIonicPage : LoginPage;
+  }
+
 
   openPage(page) {
     // close the menu when clicking a link from the menu

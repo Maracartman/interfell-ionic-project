@@ -21,8 +21,8 @@ export class LoginPage {
     password: ''
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams/*,
-              private _loginProvider: LoginProvider*/) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private _loginProvider: LoginProvider) {
   }
 
   /*logMe(): void {
